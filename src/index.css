@@ -1,0 +1,144 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------
+   MMA's Cakes & Pastries — design tokens
+   Royal blue + white brand, warmed with soft ivory.
+------------------------------------------------------------------- */
+@theme {
+  --font-serif: "Cormorant Garamond", "Times New Roman", serif;
+  --font-sans: "Manrope", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-script: "Great Vibes", "Brush Script MT", cursive;
+
+  --color-royal-50: #f1f4fd;
+  --color-royal-100: #e3e9fb;
+  --color-royal-200: #c5d2f6;
+  --color-royal-300: #9bb0ee;
+  --color-royal-400: #6684e2;
+  --color-royal-500: #3d5ed6;
+  --color-royal-600: #2443c4;
+  --color-royal-700: #1c35a3;
+  --color-royal-800: #172b80;
+  --color-royal-900: #12215f;
+  --color-royal-950: #0b1540;
+
+  --color-ivory-50: #fdfbf7;
+  --color-ivory-100: #faf6ee;
+  --color-ivory-200: #f3ecdf;
+  --color-ivory-300: #e8dcc6;
+
+  --color-ink: #161a2c;
+  --color-muted: #5d6275;
+  --color-line: #e6e3dc;
+
+  --shadow-soft: 0 1px 2px rgb(18 33 95 / 0.04), 0 8px 24px -8px rgb(18 33 95 / 0.12);
+  --shadow-lift: 0 2px 4px rgb(18 33 95 / 0.05), 0 24px 48px -16px rgb(18 33 95 / 0.28);
+
+  --animate-marquee: marquee 38s linear infinite;
+  --animate-fade-up: fade-up 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5.5rem;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-ivory-50 font-sans text-ink antialiased;
+    overflow-x: hidden;
+  }
+  h1, h2, h3, h4 {
+    @apply font-serif;
+    text-wrap: balance;
+  }
+  p { text-wrap: pretty; }
+  ::selection { background: var(--color-royal-200); color: var(--color-royal-950); }
+  :focus-visible {
+    outline: 2px solid var(--color-royal-500);
+    outline-offset: 3px;
+  }
+  button { cursor: pointer; }
+  button:disabled { cursor: not-allowed; }
+}
+
+@layer components {
+  .container-x {
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-10;
+  }
+  .eyebrow {
+    @apply inline-flex items-center gap-3 text-[0.72rem] font-semibold uppercase tracking-[0.28em] text-royal-600;
+  }
+  .eyebrow::before {
+    content: "";
+    @apply h-px w-8 bg-current opacity-60;
+  }
+  .btn-primary {
+    @apply btn bg-royal-600 text-white shadow-[0_10px_24px_-10px_rgb(36_67_196/0.7)] hover:bg-royal-700 hover:-translate-y-0.5;
+  }
+  .btn-light {
+    @apply btn bg-white text-royal-800 hover:bg-royal-50 hover:-translate-y-0.5;
+  }
+  .btn-outline {
+    @apply btn border border-royal-600/30 text-royal-700 hover:border-royal-600 hover:bg-royal-50;
+  }
+  .btn-ghost-light {
+    @apply btn border border-white/40 text-white backdrop-blur-sm hover:bg-white/10 hover:border-white;
+  }
+  .btn-whatsapp {
+    @apply btn bg-[#1faa53] text-white hover:bg-[#178a43] hover:-translate-y-0.5;
+  }
+  .field-label {
+    @apply mb-1.5 block text-[0.8rem] font-semibold tracking-wide text-ink;
+  }
+  .field {
+    @apply block w-full rounded-xl border border-line bg-white px-4 py-3 text-[0.95rem] text-ink placeholder:text-muted/60 transition focus:border-royal-500 focus:outline-none focus:ring-4 focus:ring-royal-100;
+  }
+  .field[aria-invalid="true"] {
+    @apply border-red-400 focus:border-red-500 focus:ring-red-100;
+  }
+  .field-error {
+    @apply mt-1.5 text-xs font-medium text-red-600;
+  }
+}
+
+@utility btn {
+  @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-full px-6 text-sm font-semibold tracking-wide transition duration-300 disabled:opacity-50;
+}
+
+/* Scroll-reveal (progressive enhancement; see useReveal) */
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.9s cubic-bezier(0.2, 0.7, 0.2, 1), transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+.fade-in { animation: overlay-fade 0.3s ease both; }
+.drawer-in { animation: drawer-slide 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+@keyframes overlay-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes drawer-slide { from { transform: translateX(100%); } to { transform: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { scrollbar-width: none; }
